@@ -4,10 +4,9 @@ class ModelCheckoutWediscountusergroups extends Model {
     
     public function getDiscountByCustomerGroupId($customer_group_id){
         $query = $this->db->query("SELECT
-                                    	d.*, cg.`name` AS customer_group_name
+                                    	d.*
                                     FROM
                                     	" . DB_PREFIX . "wediscountusergroups AS d
-                                    INNER JOIN " . DB_PREFIX . "customer_group AS cg ON d.customer_group = cg.customer_group_id
                                     WHERE
                                     	d.`status` = 1
                                     AND(
