@@ -6,19 +6,7 @@ class ModelTotalWediscountusergroups extends Model {
         
         $discounts = array();
         
-        $query_customer_group = $this->db->query("SELECT
-                                                    	1
-                                                    FROM
-                                                    	`information_schema`.`TABLES`
-                                                    WHERE
-                                                    	TABLE_SCHEMA = '" . DB_DATABASE . "'
-                                                    AND TABLE_NAME = '" . DB_PREFIX . "customer_group_description'");
-                                                    
-        if($query_customer_group->num_rows){
-            $table_customer_group = "customer_group_description";
-        }else{
-            $table_customer_group = "customer_group";
-        }
+        $table_customer_group = $this->getCustomerGroupTableName();
         
         $query = $this->db->query("SELECT
                                     	d.*,
@@ -82,15 +70,33 @@ class ModelTotalWediscountusergroups extends Model {
     
     public function getDiscount($discount_id){
         
+        $table_customer_group = $this->getCustomerGroupTableName();
+        
         $query = $this->db->query("SELECT
                                     	d.*,
                                     	cg.`name` AS customer_group_name
                                     FROM
                                     	" . DB_PREFIX . "wediscountusergroups AS d
-                                    LEFT JOIN " . DB_PREFIX . "customer_group AS cg ON d.customer_group = cg.customer_group_id
+                                    LEFT JOIN " . DB_PREFIX . $table_customer_group ." AS cg ON d.customer_group = cg.customer_group_id
                                     WHERE d.id = '".(int)$discount_id."'"); 
         return $query->row;                             
                                 
+    }
+    
+    private function getCustomerGroupTableName(){
+        $query_customer_group = $this->db->query("SELECT
+                                                    	1
+                                                    FROM
+                                                    	`information_schema`.`TABLES`
+                                                    WHERE
+                                                    	TABLE_SCHEMA = '" . DB_DATABASE . "'
+                                                    AND TABLE_NAME = '" . DB_PREFIX . "customer_group_description'");
+                                                    
+        if($query_customer_group->num_rows){
+            return "customer_group_description";
+        }else{
+            return "customer_group";
+        }        
     }
     
 }
