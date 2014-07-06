@@ -381,7 +381,7 @@ class ControllerTotalWediscountusergroups extends Controller {
                               PRIMARY KEY (`id`),
                               KEY `date_start` (`date_start`) USING BTREE,
                               KEY `date_end` (`date_end`) USING BTREE
-                            ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;");
+                            ) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
     }
     
     public function unistall(){
